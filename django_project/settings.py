@@ -135,7 +135,16 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email Settings
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# Email is sent to port 2500
+# Email is read at port 9000
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# In production it would probably be something like "noreply@example.com"
+DEFAULT_FROM_EMAIL = "newspaper-dbarnes@cis218.kvcc.edu"
+EMAIL_HOST = "barnesbrothers.net"  # In production would be the production SMTP server
+EMAIL_HOST_USER = ""  # Not needed for Inbucket. Would need in production.
+EMAIL_HOST_PASSWORD = ""  # Not needed for Inbucket. Would need in production.
+EMAIL_PORT = 2500  # In production would be 587.
+EMAIL_USE_TLS = False  # In production would be True.
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
