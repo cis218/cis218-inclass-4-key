@@ -16,8 +16,12 @@
         {{ article.body }}
       </div>
       <div class="card-footer text-center text-muted">
-        <a href="{% url 'article_edit' article.pk %}">Edit</a> |
-        <a href="{% url 'article_delete' article.pk %}">Delete</a>
+        {% if article.author == request.user %}
+          <a href="{% url 'article_edit' article.pk %}">Edit</a> |
+          <a href="{% url 'article_delete' article.pk %}">Delete</a>
+        {% else %}
+          &nbsp;
+        {% endif %}
       </div>
     </div>
     <br>
