@@ -13,6 +13,11 @@ class Article(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="liked_articles",
+        blank=True,
+    )
 
     def __str__(self):
         """Convert to string"""
@@ -21,6 +26,10 @@ class Article(models.Model):
     def get_absolute_url(self):
         """Get absolute url based on pk"""
         return reverse("article_detail", kwargs={"pk": self.pk})
+
+    def get_like_url(self):
+        """Get like url based on pk"""
+        return reverse("article_like", kwargs={"pk": self.pk})
 
 
 class Comment(models.Model):

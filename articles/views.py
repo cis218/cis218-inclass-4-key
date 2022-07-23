@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import JsonResponse
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.detail import SingleObjectMixin
@@ -108,3 +109,31 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """Ensure Article was written by logged in user"""
         obj = self.get_object()
         return obj.author == self.request.user
+
+
+class ArticleLikeView(LoginRequiredMixin, View):
+    """Like View"""
+
+    def get(self, request, *args, **kwargs):
+        """GET Request"""
+        article_id = request.GET.get("article_id", None)
+        article_action = request.GET.get("article_action", None)
+
+        if not article_id or not article_action:
+            return JsonResponse(
+                {
+                    "success": False,
+                }
+            )
+
+        article = Article.objects.get(id=article_id)
+        if article_action == "like":
+            article.likes.add(request.user)
+        else:
+            article.likes.remove(request.user)
+
+        return JsonResponse(
+            {
+                "success": True,
+            }
+        )
